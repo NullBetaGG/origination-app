@@ -212,3 +212,10 @@
     height: 90vh !important;
   }
 }
+
+.Toastify__toast {
+  background-color: var(--neutral-900);
+  margin-bottom: 5px !important;
+  border-radius: 5px !important;
+  font-size: medium;
+}

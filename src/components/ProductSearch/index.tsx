@@ -19,11 +19,8 @@ const ProductSearch: React.FC<ProductSearchProps> = ({ onSelectProduct }) => {
     );
 
     setProducts(filteredProducts);
-  };
 
-  const handleProductSelect = (product: string) => {
-    onSelectProduct(product);
-    console.log(product);
+    onSelectProduct(value);
   };
 
   return (

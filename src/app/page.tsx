@@ -5,22 +5,75 @@ import Input from "@/components/Input";
 import ProductSearch from "@/components/ProductSearch";
 import Selector from "@/components/Selector";
 import { City } from "@/types/Cities";
-import { AutoComplete } from "antd";
+import { BASE_URL } from "@/utils/config";
+import { StateTransformName } from "@/utils/stateTransform";
+import axios from "axios";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function Home() {
-  const [selectedModel, setSelectedModel] = useState<string>("oferta");
+  const [selectedModel, setSelectedModel] = useState<'oferta' | 'demanda' | string>("oferta");
   const [selectedUnity, setSelectedUnity] = useState<string>("ton");
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
+  const [user, setUser] = useState<string | null>(null);
+  const [volume, setVolume] = useState<number | null>(null);
+  const [price, setPrice] = useState<number | null>(null);
+  const [supplier, setSupplier] = useState<string | null>(null);
   const models: string[] = ['oferta', 'demanda'];
   const unity: string[] = ['ton', 'sc'];
-  const productOptions = ["Milho", "Farelo de Soja", "Soja Grão", "Algodão", "DDGS"];
 
   const handleProductSelect = (product: string) => {
     setSelectedProduct(product);
-    console.log(product);
   };
+
+  const handleCitySelect = (city: any) => {
+    setSelectedCity(city);
+  }
+
+  const handleSubmit = async () => {
+    const payload = {
+      user: user,
+      volume: volume,
+      unit: selectedUnity,
+      price: price,
+      product: selectedProduct,
+      city: selectedCity?.name,
+      state: selectedCity ? StateTransformName(selectedCity?.state_id) : "",
+      supplier: selectedModel === 'oferta' ? supplier : "",
+      type: selectedModel,
+      ibge_code: selectedCity?.ibge_code
+
+    }
+
+    try {
+      const response = await axios.post(`${BASE_URL}/new-orders`, payload);
+      toast.success('Ordem salva com sucesso!');
+
+      setUser(null);
+      setSelectedProduct(null);
+      setVolume(null);
+      setPrice(null);
+      setSelectedCity(null);
+    } catch (err: any) {
+      if (err) {
+        if (err.response.data.message) {
+          const messages = err.response.data.message;
+          if (Array.isArray(messages)) {
+            messages.forEach(message => toast.warn(message));
+          } else {
+            console.log(err.response.data.message)
+            toast.warn(messages);
+          }
+        } else {
+          toast.error('Ocorreu um erro ao salvar a ordem.');
+        }
+      } else {
+        console.error('Erro desconhecido:', err);
+        toast.error('Ocorreu um erro desconhecido.');
+      }
+    }
+  }
 
   return (
     <main className="flex min-h-screen min-w-full flex-col items-center justify-center py-16 px-8">
@@ -44,25 +97,14 @@ export default function Home() {
           <div className="w-[80%] mb-4 flex flex-col justify-center">
             <Input
               label="Usuário"
+              onChange={(e) => {
+                setUser(e.target.value);
+              }}
             />
           </div>
           <div className="w-[80%] mb-4 flex justify-between">
             <div className="flex flex-col w-[100%] justify-center">
               <ProductSearch onSelectProduct={handleProductSelect} />
-              {/* <AutoComplete
-                className="w-[100%] h-[60px]"
-                options={productOptions.map(product => ({ value: product }))}
-                onSelect={(e) => {
-                  setSelectedProduct(e);
-                }}
-                filterOption={(inputValue, option) =>
-                  option!.value.toLowerCase().includes(inputValue.toLowerCase())
-                }
-              >
-                <Input
-                  label="Produto"
-                />
-              </AutoComplete> */}
             </div>
           </div>
           <div className="w-[80%] mb-4 flex justify-between">
@@ -70,9 +112,16 @@ export default function Home() {
               <Input
                 type="number"
                 label="Volume"
+                onChange={(e) => {
+                  if (e.target.value) {
+                    const value = Number(e.target.value);
+                    setVolume(value);
+                  }
+                }}
               />
             </div>
             <div className="flex flex-col justify-center">
+              <p className="mb-1 ml-3">Unidade</p>
               <div className="gap-2 flex justify-center">
                 {unity.map((e, i) => {
                   return (
@@ -83,7 +132,7 @@ export default function Home() {
                       onClick={() => {
                         setSelectedUnity(e);
                       }}
-                      containerStyle="w-[40%] text-xl"
+                      containerStyle="w-[40%] h-[42px] text-xl"
                     />
                   )
                 })}
@@ -94,16 +143,25 @@ export default function Home() {
             <Input
               type="number"
               label="Preço"
+              onChange={(e) => {
+                if (e.target.value) {
+                  const value = Number(e.target.value);
+                  setPrice(value);
+                }
+              }}
             />
           </div>
           <div className="w-[80%] mb-4 flex flex-col justify-center">
-            <CitySearch />
+            <CitySearch onSelectCity={handleCitySelect} />
           </div>
           {
             selectedModel === 'demanda' ? <></> : (
               <div className="w-[80%] mb-4 flex flex-col justify-center">
                 <Input
                   label="Fornecedor"
+                  onChange={(e) => {
+                    setSupplier(e.target.value);
+                  }}
                 />
               </div>
             )
@@ -112,6 +170,9 @@ export default function Home() {
         <Button
           title={`Criar ${selectedModel}`}
           containerStyle="mt-10 w-[80%]"
+          onClick={() => {
+            handleSubmit();
+          }}
         />
       </div>
     </main>
