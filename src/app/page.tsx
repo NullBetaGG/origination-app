@@ -1,17 +1,22 @@
 'use client'
 import Button from "@/components/Button";
 import CitySearch from "@/components/CitySearch";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import Input from "@/components/Input";
 import ProductSearch from "@/components/ProductSearch";
 import Selector from "@/components/Selector";
 import { City } from "@/types/Cities";
 import { BASE_URL } from "@/utils/config";
 import { StateTransformName } from "@/utils/stateTransform";
+import { Player } from "@lottiefiles/react-lottie-player";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function Home() {
+  const [loading, setLoading] = useState(true);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [selectedModel, setSelectedModel] = useState<'oferta' | 'demanda' | string>("oferta");
   const [selectedUnity, setSelectedUnity] = useState<string>("ton");
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
@@ -29,7 +34,15 @@ export default function Home() {
 
   const handleCitySelect = (city: any) => {
     setSelectedCity(city);
-  }
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSubmit = async () => {
     const payload = {
@@ -49,12 +62,11 @@ export default function Home() {
     try {
       const response = await axios.post(`${BASE_URL}/new-orders`, payload);
       toast.success('Ordem salva com sucesso!');
+      setShowSuccess(true);
 
-      setUser(null);
-      setSelectedProduct(null);
-      setVolume(null);
-      setPrice(null);
-      setSelectedCity(null);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1200);
     } catch (err: any) {
       if (err) {
         if (err.response.data.message) {
@@ -73,108 +85,143 @@ export default function Home() {
         toast.error('Ocorreu um erro desconhecido.');
       }
     }
+  };
+
+  if (showSuccess) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-neutral-200">
+        <Player
+          autoplay
+          loop
+          src='/animation/ok.json'
+          style={{ height: '250px', width: '250px' }}
+        />
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <>
+        <div className="flex items-center flex-col justify-center min-h-screen bg-neutral-200">
+          <Player
+            autoplay
+            loop
+            src='/animation/growing.json'
+            style={{ height: '350px', width: '350px' }}
+          />
+          <img src="/logos/powered_by_germinare.svg" className="h-9 mr-4 mt-6" />
+        </div>
+      </>
+    );
   }
 
   return (
-    <main className="flex min-h-screen min-w-full flex-col items-center justify-center py-16 px-8">
-      <div className="w-[90vw] h-[70vh] rounded-base max-w-[420px] flex flex-col items-center justify-start">
-        <div className="flex justify-around w-[90%] h-[45px] mb-4">
-          {models.map((e, i) => {
-            return (
-              <Selector
-                key={e}
-                text={e}
-                isSelected={selectedModel === e}
-                onClick={() => {
-                  setSelectedModel(e);
-                }}
-                containerStyle="w-[40%] text-xl uppercase"
-              />
-            )
-          })}
-        </div>
-        <div className="flex flex-col items-center w-[100%]">
-          <div className="w-[80%] mb-4 flex flex-col justify-center">
-            <Input
-              label="Usuário"
-              onChange={(e) => {
-                setUser(e.target.value);
-              }}
-            />
-          </div>
-          <div className="w-[80%] mb-4 flex justify-between">
-            <div className="flex flex-col w-[100%] justify-center">
-              <ProductSearch onSelectProduct={handleProductSelect} />
+    <>
+      <Header />
+      <div className="flex flex-col">
+        <main className="flex flex-col items-center justify-center py-16 px-8" style={{ minHeight: 'calc(100vh - 120px)' }}>
+          <div className="w-[90vw] h-[70vh] rounded-base max-w-[420px] flex flex-col items-center justify-start">
+            <div className="flex justify-around w-[90%] h-[45px] mb-4">
+              {models.map((e, i) => {
+                return (
+                  <Selector
+                    key={e}
+                    text={e}
+                    isSelected={selectedModel === e}
+                    onClick={() => {
+                      setSelectedModel(e);
+                    }}
+                    containerStyle="w-[40%] text-xl uppercase"
+                  />
+                )
+              })}
             </div>
-          </div>
-          <div className="w-[80%] mb-4 flex justify-between">
-            <div className="w-[80%] flex flex-col justify-center">
-              <Input
-                type="number"
-                label="Volume"
-                onChange={(e) => {
-                  if (e.target.value) {
-                    const value = Number(e.target.value);
-                    setVolume(value);
-                  }
-                }}
-              />
-            </div>
-            <div className="flex flex-col justify-center">
-              <p className="mb-1 ml-3">Unidade</p>
-              <div className="gap-2 flex justify-center">
-                {unity.map((e, i) => {
-                  return (
-                    <Selector
-                      key={e}
-                      text={e}
-                      isSelected={selectedUnity === e}
-                      onClick={() => {
-                        setSelectedUnity(e);
-                      }}
-                      containerStyle="w-[40%] h-[42px] text-xl"
-                    />
-                  )
-                })}
-              </div>
-            </div>
-          </div>
-          <div className="w-[80%] mb-4 flex flex-col justify-center">
-            <Input
-              type="number"
-              label="Preço"
-              onChange={(e) => {
-                if (e.target.value) {
-                  const value = Number(e.target.value);
-                  setPrice(value);
-                }
-              }}
-            />
-          </div>
-          <div className="w-[80%] mb-4 flex flex-col justify-center">
-            <CitySearch onSelectCity={handleCitySelect} />
-          </div>
-          {
-            selectedModel === 'demanda' ? <></> : (
+            <div className="flex flex-col items-center w-[100%]">
               <div className="w-[80%] mb-4 flex flex-col justify-center">
                 <Input
-                  label="Fornecedor"
+                  label="Usuário"
                   onChange={(e) => {
-                    setSupplier(e.target.value);
+                    setUser(e.target.value);
                   }}
                 />
               </div>
-            )
-          }
-        </div>
-        <Button
-          title={`Criar ${selectedModel}`}
-          containerStyle="mt-10 w-[80%]"
-          onClick={() => {
-            handleSubmit();
-          }}
-        />
+              <div className="w-[80%] mb-4 flex justify-between">
+                <div className="flex flex-col w-[100%] justify-center">
+                  <ProductSearch onSelectProduct={handleProductSelect} />
+                </div>
+              </div>
+              <div className="w-[80%] mb-4 flex justify-between">
+                <div className="w-[80%] flex flex-col justify-center">
+                  <Input
+                    type="number"
+                    label="Volume"
+                    onChange={(e) => {
+                      if (e.target.value) {
+                        const value = Number(e.target.value);
+                        setVolume(value);
+                      }
+                    }}
+                  />
+                </div>
+                <div className="flex flex-col justify-center">
+                  <p className="mb-1 ml-3">Unidade</p>
+                  <div className="gap-2 flex justify-center">
+                    {unity.map((e, i) => {
+                      return (
+                        <Selector
+                          key={e}
+                          text={e}
+                          isSelected={selectedUnity === e}
+                          onClick={() => {
+                            setSelectedUnity(e);
+                          }}
+                          containerStyle="w-[40%] h-[42px] text-xl"
+                        />
+                      )
+                    })}
+                  </div>
+                </div>
+              </div>
+              <div className="w-[80%] mb-4 flex flex-col justify-center">
+                <Input
+                  type="number"
+                  label="Preço"
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      const value = Number(e.target.value);
+                      setPrice(value);
+                    }
+                  }}
+                />
+              </div>
+              <div className="w-[80%] mb-4 flex flex-col justify-center">
+                <CitySearch onSelectCity={handleCitySelect} />
+              </div>
+              {
+                selectedModel === 'demanda' ? <></> : (
+                  <div className="w-[80%] mb-4 flex flex-col justify-center">
+                    <Input
+                      label="Fornecedor"
+                      onChange={(e) => {
+                        setSupplier(e.target.value);
+                      }}
+                    />
+                  </div>
+                )
+              }
+            </div>
+            <Button
+              title={`Criar ${selectedModel}`}
+              containerStyle="mt-10 w-[80%]"
+              onClick={() => {
+                handleSubmit();
+              }}
+            />
+          </div>
+        </main>
       </div>
-    </main>
+      <Footer />
+    </>
   );
 }

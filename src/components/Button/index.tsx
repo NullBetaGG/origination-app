@@ -1,7 +1,6 @@
 import {
   ButtonHTMLAttributes,
   DetailedHTMLProps,
-  MouseEvent,
   MouseEventHandler,
 } from "react";
 
