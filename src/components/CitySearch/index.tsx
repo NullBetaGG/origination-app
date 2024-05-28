@@ -1,62 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Input from '../Input';
 import { City } from '@/types/Cities';
 import { BASE_URL } from '@/utils/config';
 import { StateTransformAcronym } from '@/utils/stateTransform';
 
-interface CitySeacrchProps {
+interface CitySearchProps {
   onSelectCity: (city: City) => void;
 }
 
-const CitySeacrh: React.FC<CitySeacrchProps> = ({ onSelectCity }) => {
+const CitySearch: React.FC<CitySearchProps> = ({ onSelectCity }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [cities, setCities] = useState<City[]>([]);
+  const [filteredCities, setFilteredCities] = useState<City[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
 
-  const handleInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setInputValue(value);
+  useEffect(() => {
+    if (inputValue.length >= 2) {
+      const fetchCities = async () => {
+        try {
+          const response = await axios.get<City[]>(`${BASE_URL}/cities/search?name=${inputValue}`);
+          setCities(response.data);
+          setFilteredCities(response.data);
+          setShowSuggestions(true);
+        } catch (error) {
+          console.error('Error searching cities:', error);
+        }
+      };
 
-    try {
-      const response = await axios.get<City[]>(`${BASE_URL}/cities/search?name=${value}`);
-      setCities(response.data);
-    } catch (error) {
-      console.error('Error searching cities:', error);
+      fetchCities();
+    } else {
+      setFilteredCities([]);
+      setShowSuggestions(false);
     }
+  }, [inputValue]);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
   };
 
-  const handleCitySelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    const selectedOption = cities.find(city => `${city.name} - ${StateTransformAcronym(city.state_id)}` === value);
-
-    if (selectedOption) {
-      onSelectCity(selectedOption)
-    }
-  }
-
-
+  const handleCitySelect = (city: City) => {
+    setInputValue(`${city.name} - ${StateTransformAcronym(city.state_id)}`);
+    setShowSuggestions(false);
+    onSelectCity(city);
+  };
 
   return (
-    <div>
+    <div className="relative">
       <Input
         label="Cidade"
         type="text"
-        list="cities-list"
-        id="city-input"
         value={inputValue}
         onChange={handleInputChange}
-        onInput={handleCitySelect}
+        autoComplete="off"
       />
-      <datalist id="cities-list">
-        {cities.map(city => (
-          <option
-            key={city.id}
-            value={`${city.name} - ${StateTransformAcronym(city.state_id)}`}
-          />
-        ))}
-      </datalist>
+      {showSuggestions && filteredCities.length > 0 && (
+        <ul className="absolute z-10 text-neutral-1000 bg-neutral-150 rounded-xl w-full scrollbar mt-1 max-h-60 overflow-y-auto">
+          {filteredCities.map(city => (
+            <li
+              key={city.id}
+              className="px-4 py-2 cursor-pointer text-[1rem] hover:bg-neutral-200"
+              onClick={() => handleCitySelect(city)}
+            >
+              {`${city.name} - ${StateTransformAcronym(city.state_id)}`}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
 
-export default CitySeacrh;
+export default CitySearch;
