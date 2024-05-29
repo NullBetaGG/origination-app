@@ -4,12 +4,13 @@ import CitySearch from "@/components/CitySearch";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Input from "@/components/Input";
+import Loading from "@/components/Loading";
 import ProductSearch from "@/components/ProductSearch";
 import Selector from "@/components/Selector";
+import Success from "@/components/Success";
 import { City } from "@/types/Cities";
 import { BASE_URL } from "@/utils/config";
 import { StateTransformName } from "@/utils/stateTransform";
-import { Player } from "@lottiefiles/react-lottie-player";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -88,33 +89,12 @@ export default function Home() {
   };
 
   if (showSuccess) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-neutral-200">
-        <Player
-          autoplay
-          loop
-          src='/animation/ok.json'
-          style={{ height: '250px', width: '250px' }}
-        />
-      </div>
-    );
-  }
+    return <Success />;
+  };
 
   if (loading) {
-    return (
-      <>
-        <div className="flex items-center flex-col justify-center min-h-screen bg-neutral-200">
-          <Player
-            autoplay
-            loop
-            src='/animation/growing.json'
-            style={{ height: '350px', width: '350px' }}
-          />
-          <img src="/logos/powered_by_germinare.svg" className="h-9 mr-4 mt-6" />
-        </div>
-      </>
-    );
-  }
+    return <Loading />;
+  };
 
   return (
     <>
@@ -165,7 +145,7 @@ export default function Home() {
                   />
                 </div>
                 <div className="flex flex-col justify-center">
-                  <p className="mb-1 ml-3">Unidade</p>
+                  <p className="mb-1 ml-3 text-neutral-300 font-medium">Unidade</p>
                   <div className="gap-2 flex justify-center">
                     {unity.map((e, i) => {
                       return (

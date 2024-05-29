@@ -47,7 +47,7 @@ const ProductSearch: React.FC<ProductSearchProps> = ({ onSelectProduct }) => {
         autoComplete="off"
       />
       {showSuggestions && filteredProducts.length > 0 && (
-        <ul className="absolute z-10 text-neutral-1000 bg-neutral-150 rounded-xl w-full scrollbar mt-1 max-h-60 overflow-y-auto">
+        <ul className="absolute z-10 text-neutral-300 bg-neutral-800 rounded-xl w-full scrollbar mt-1 max-h-60 overflow-y-auto">
           {filteredProducts.map((product, index) => (
             <li
               key={index}

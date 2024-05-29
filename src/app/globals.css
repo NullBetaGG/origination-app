@@ -20,19 +20,19 @@
     --primary-800: #97440C;
     --primary-900: #833B0B;
 
-    --neutral-100: #131417;
-    --neutral-150: #1E2024;
-    --neutral-200: #2A2C32;
-    --neutral-300: #41454E;
+    --neutral-100: #ffffff;
+    --neutral-150: #ecedf2;
+    --neutral-200: #eef1f6;
+    --neutral-300: #1f1f1f;
     --neutral-400: #585D6A;
     --neutral-500: #6F7685;
     --neutral-600: #8A909E;
     --neutral-700: #A6AAB5;
     --neutral-800: #C2C5CC;
-    --neutral-900: #DEDFE3;
+    --neutral-900: #41454E;
     --neutral-1000: #F9FAFA;
 
-    --support-error: #FD5868;
+    --support-error: #1c1919;
     --support-success: #01AA20;
     --support-warning: #CBCF17;
     --support-info: #1375ff;
@@ -68,13 +68,13 @@
       --neutral-100: #131417;
       --neutral-150: #1E2024;
       --neutral-200: #2A2C32;
-      --neutral-300: #41454E;
+      --neutral-300: #DEDFE3;
       --neutral-400: #585D6A;
       --neutral-500: #6F7685;
       --neutral-600: #8A909E;
-      --neutral-700: #A6AAB5;
-      --neutral-800: #C2C5CC;
-      --neutral-900: #DEDFE3;
+      --neutral-700: #2A2C32;
+      --neutral-800: #1E2024;
+      --neutral-900: #41454E;
       --neutral-1000: #F9FAFA;
 
       --support-error: #FD5868;

@@ -31,7 +31,7 @@ export default function Button({
   ...props
 }: ButtonProps) {
   let style =
-    "border-primary-500 text-primary-500 hover:border-primary-300 hover:text-primary-300 active:border-primary-700 active:text-primary-700";
+    "border-primary-500 text-primary-500 font-medium hover:border-primary-300 hover:text-primary-300 active:border-primary-700 active:text-primary-700";
 
   let sizeStyle =
     size === "small"
@@ -41,7 +41,7 @@ export default function Button({
         : "p-[10px] text-base ";
 
   let disabledStyle = disabled
-    ? "cursor-not-allowed !text-neutral-900 !border-neutral-300 !bg-transparent !hover:border-primary-300 hover:text-primary-300 "
+    ? "cursor-not-allowed !text-neutral-900 !border-neutral-900 !bg-transparent !hover:border-primary-300 hover:text-primary-300 "
     : "";
   return (
     <button
@@ -54,7 +54,7 @@ export default function Button({
     >
       {loading ? "Carregando..." : (
         <>
-          {imageSrc && <img src={imageSrc} className="w-[18px] h-[20px]" />}
+          {imageSrc && <img src={imageSrc} className="w-[18px]  h-[20px]" />}
           {title && <p>{title}</p>}
           {children}
         </>
