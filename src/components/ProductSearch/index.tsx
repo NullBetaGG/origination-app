@@ -12,7 +12,7 @@ const ProductSearch: React.FC<ProductSearchProps> = ({ onSelectProduct }) => {
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
 
   useEffect(() => {
-    if (inputValue.length >= 2) {
+    if (inputValue.length >= 1) {
       const filteredProducts = productsList.filter(product =>
         product.toLowerCase().includes(inputValue.toLowerCase())
       );
