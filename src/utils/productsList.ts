@@ -2,6 +2,8 @@ export const productsList = [
   "CAROÇO DE ALGODÃO",
   "CASCA",
   "DDGS/DDG",
+  "DDGS A GRANEL",
+  "DDGS ENSACADO",
   "FERTILIZANTE",
   "FARELO DE SOJA",
   "FARELO DE AMENDOIM ",
@@ -13,4 +15,5 @@ export const productsList = [
   "ÓLEO DE SOJA",
   "SOJA DESATIVADA",
   "SOJA GRÃO",
+  "SORGO",
 ];
