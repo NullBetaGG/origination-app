@@ -32,7 +32,7 @@
     --neutral-900: #41454E;
     --neutral-1000: #F9FAFA;
 
-    --support-error: #1c1919;
+    --support-error: #FD5868;
     --support-success: #01AA20;
     --support-warning: #CBCF17;
     --support-info: #1375ff;
@@ -257,4 +257,9 @@
 .custom-confirm-dialog .p-button:hover {
   background-color: #005bb5;
   /* Cor do botão ao passar o mouse */
+}
+
+.MuiPaper-root {
+  background-color: var(--neutral-200) !important;
+  min-width: 220px !important;
 }

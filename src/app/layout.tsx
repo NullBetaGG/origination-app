@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ToastContainerWrapper from "@/components/Wrapper/ToastContainerWrapper";
-import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
-
 
 const inter = Inter({ subsets: ["latin"] });
 
