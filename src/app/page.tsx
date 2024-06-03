@@ -8,6 +8,7 @@ import Loading from "@/components/Loading";
 import ProductSearch from "@/components/ProductSearch";
 import Selector from "@/components/Selector";
 import Success from "@/components/Success";
+import { useEnvironment } from "@/context/Environment";
 import { City } from "@/types/Cities";
 import { BASE_URL } from "@/utils/config";
 import { StateTransformName } from "@/utils/stateTransform";
@@ -16,6 +17,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function Home() {
+  const { environment } = useEnvironment();
   const [loading, setLoading] = useState(true);
   const [showSuccess, setShowSuccess] = useState(false);
   const [selectedModel, setSelectedModel] = useState<'oferta' | 'demanda' | string>("oferta");
@@ -100,7 +102,15 @@ export default function Home() {
     <>
       <Header />
       <div className="flex flex-col">
-        <main className="flex flex-col items-center justify-center py-16 px-8" style={{ minHeight: 'calc(100vh - 120px)' }}>
+        {
+          environment === "DEV" ?
+            <div className="w-full items-center flex justify-center bg-support-error py-3">
+              <p className="text-neutral-300 font-bold text-2xl">DEVELOP</p>
+            </div>
+            :
+            <></>
+        }
+        <main className={`flex flex-col items-center ${environment === "DEV" ? 'mt-[-42px]' : ''}  justify-center py-16 px-8`} style={{ minHeight: 'calc(100vh - 120px)' }}>
           <div className="w-[90vw] h-[70vh] rounded-base max-w-[420px] flex flex-col items-center justify-start">
             <div className="flex justify-around w-[90%] h-[45px] mb-4">
               {models.map((e, i) => {
