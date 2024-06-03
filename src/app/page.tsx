@@ -11,6 +11,7 @@ import Success from "@/components/Success";
 import { City } from "@/types/Cities";
 import { BASE_URL } from "@/utils/config";
 import { StateTransformName } from "@/utils/stateTransform";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -28,6 +29,15 @@ export default function Home() {
   const [supplier, setSupplier] = useState<string | null>(null);
   const models: string[] = ['oferta', 'demanda'];
   const unity: string[] = ['ton', 'sc'];
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleConfirm = () => {
+    setOpen(false);
+    // Your confirm action here
+  };
 
   const handleProductSelect = (product: string) => {
     setSelectedProduct(product);
@@ -198,6 +208,30 @@ export default function Home() {
                 handleSubmit();
               }}
             />
+            <div>
+              <Button onClick={handleClickOpen}>
+                Open Confirm Dialog
+              </Button>
+              <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    Are you sure you want to proceed?
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose}>Cancel</Button>
+                  <Button onClick={handleConfirm} autoFocus>
+                    Confirm
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </div>
           </div>
         </main>
       </div>

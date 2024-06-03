@@ -219,3 +219,42 @@
   border-radius: 5px !important;
   font-size: medium;
 }
+
+/* styles.css */
+.custom-confirm-dialog .p-dialog {
+  background-color: #f0f0f0;
+  /* Cor de fundo */
+  font-size: 1.2rem;
+  /* Tamanho da fonte */
+  color: #333;
+  /* Cor do texto */
+}
+
+.custom-confirm-dialog .p-dialog-titlebar {
+  background-color: #007ad9;
+  /* Cor de fundo do título */
+  color: white;
+  /* Cor do texto do título */
+}
+
+.custom-confirm-dialog .p-dialog-header {
+  font-size: 1.5rem;
+  /* Tamanho da fonte do título */
+}
+
+.custom-confirm-dialog .p-dialog-footer {
+  background-color: #e0e0e0;
+  /* Cor de fundo do rodapé */
+}
+
+.custom-confirm-dialog .p-button {
+  background-color: #007ad9;
+  /* Cor do botão */
+  border: none;
+  /* Remover borda */
+}
+
+.custom-confirm-dialog .p-button:hover {
+  background-color: #005bb5;
+  /* Cor do botão ao passar o mouse */
+}
