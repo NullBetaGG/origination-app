@@ -15,6 +15,7 @@ export const productsList = [
   "FARELO DE POLPA CÍTRICA",
   "FARELO DE TRIGO",
   "GERMEM ",
+  "MILHETO",
   "MILHO GRÃO",
   "MILHO MOÍDO",
   "ÓLEO DE SOJA",
