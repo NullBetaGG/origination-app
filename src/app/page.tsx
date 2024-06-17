@@ -11,7 +11,8 @@ import Success from "@/components/Success";
 import { useEnvironment } from "@/context/Environment";
 import { City } from "@/types/Cities";
 import { BASE_URL } from "@/utils/config";
-import { StateTransformName } from "@/utils/stateTransform";
+import { StateTransformAcronym, StateTransformName } from "@/utils/stateTransform";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -28,6 +29,17 @@ export default function Home() {
   const [price, setPrice] = useState<number | null>(null);
   const [supplier, setSupplier] = useState<string | null>(null);
   const models: string[] = ['oferta', 'demanda'];
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    if (!user || !volume || !selectedProduct || !price || !selectedCity?.name) {
+      toast.error('Preencha todos os campos!');
+      return
+    }
+    setOpen(true);
+  }
+
+  const handleClose = () => setOpen(false);
 
   const handleProductSelect = (product: string) => {
     setSelectedProduct(product);
@@ -46,6 +58,7 @@ export default function Home() {
   }, []);
 
   const handleSubmit = async () => {
+    setOpen(false);
     const payload = {
       user: user,
       volume: volume,
@@ -88,13 +101,8 @@ export default function Home() {
     }
   };
 
-  if (showSuccess) {
-    return <Success />;
-  };
-
-  if (loading) {
-    return <Loading />;
-  };
+  if (showSuccess) return <Success />;
+  if (loading) return <Loading />;
 
   return (
     <>
@@ -185,12 +193,66 @@ export default function Home() {
               title={`Criar ${selectedModel}`}
               containerStyle="mt-10 w-[80%]"
               onClick={() => {
-                handleSubmit();
+                handleClickOpen();
               }}
             />
+            <div>
+              <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title" className="text-neutral-300">{`Deseja criar a ${selectedModel}?`}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText
+                    id="alert-dialog-description"
+                  >
+                    <div className="text-neutral-300 flex flex-col gap-1">
+                      <div className="flex justify-between">
+                        <p className="font-bold text-[14px]">Nome:</p><p>{user}</p>
+                      </div>
+                      <div className="flex justify-between">
+                        <p className="font-bold text-[14px]">Produto:</p><p className="ml-2">{selectedProduct}</p>
+                      </div>
+                      <div className="flex justify-between">
+                        <p className="font-bold text-[14px]">Volume:</p><p>{volume} /ton</p>
+                      </div>
+                      <div className="flex justify-between">
+                        <p className="font-bold text-[14px]">Preço:</p><p>R$ {price} /ton</p>
+                      </div>
+                      <div className="flex justify-between">
+                        <p className="font-bold text-[14px]">Cidade:</p><p>{selectedCity?.name}/{selectedCity ? StateTransformAcronym(selectedCity?.state_id) : ""}</p>
+                      </div>
+                      {
+                        selectedModel === "oferta" ?
+                          <div className="flex justify-between">
+                            <p className="font-bold text-[14px]">Fornecedor:</p><p className="ml-2">{supplier}</p>
+                          </div>
+                          :
+                          <></>
+                      }
+                    </div>
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    containerStyle='h-[35px] border-support-error text-support-error hover:text-support-error hover:border-support-error'
+                    onClick={handleClose}>
+                    Não
+                  </Button>
+                  <Button
+                    containerStyle='h-[35px] border-support-info text-support-info hover:text-support-info hover:border-support-info'
+                    onClick={handleSubmit}
+                    autoFocus>
+                    Sim
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </div>
           </div>
-        </main>
-      </div>
+        </main >
+      </div >
       <Footer />
     </>
   );
