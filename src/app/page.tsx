@@ -21,7 +21,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [showSuccess, setShowSuccess] = useState(false);
   const [selectedModel, setSelectedModel] = useState<'oferta' | 'demanda' | string>("oferta");
-  const [selectedUnity, setSelectedUnity] = useState<string>("ton");
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const [user, setUser] = useState<string | null>(null);
@@ -29,7 +28,6 @@ export default function Home() {
   const [price, setPrice] = useState<number | null>(null);
   const [supplier, setSupplier] = useState<string | null>(null);
   const models: string[] = ['oferta', 'demanda'];
-  const unity: string[] = ['ton', 'sc'];
 
   const handleProductSelect = (product: string) => {
     setSelectedProduct(product);
@@ -51,7 +49,7 @@ export default function Home() {
     const payload = {
       user: user,
       volume: volume,
-      unit: selectedUnity,
+      unit: 'ton',
       price: price,
       product: selectedProduct,
       city: selectedCity?.name,
@@ -142,10 +140,10 @@ export default function Home() {
                 </div>
               </div>
               <div className="w-[80%] mb-4 flex justify-between">
-                <div className="w-[80%] flex flex-col justify-center">
+                <div className="w-[100%] flex flex-col justify-center">
                   <Input
                     type="number"
-                    label="Volume"
+                    label="Volume (ton)"
                     onChange={(e) => {
                       if (e.target.value) {
                         const value = Number(e.target.value);
@@ -153,24 +151,6 @@ export default function Home() {
                       }
                     }}
                   />
-                </div>
-                <div className="flex flex-col justify-center">
-                  <p className="mb-1 ml-3 text-neutral-300 font-medium">Unidade</p>
-                  <div className="gap-2 flex justify-center">
-                    {unity.map((e, i) => {
-                      return (
-                        <Selector
-                          key={e}
-                          text={e}
-                          isSelected={selectedUnity === e}
-                          onClick={() => {
-                            setSelectedUnity(e);
-                          }}
-                          containerStyle="w-[40%] h-[42px] text-xl"
-                        />
-                      )
-                    })}
-                  </div>
                 </div>
               </div>
               <div className="w-[80%] mb-4 flex flex-col justify-center">
