@@ -58,8 +58,8 @@ export default function Home() {
       state: selectedCity ? StateTransformName(selectedCity?.state_id) : "",
       supplier: selectedModel === 'oferta' ? supplier : "",
       type: selectedModel,
-      ibge_code: selectedCity?.ibge_code
-
+      ibge_code: selectedCity?.ibge_code,
+      new_price: ""
     }
 
     try {
