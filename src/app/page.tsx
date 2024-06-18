@@ -1,4 +1,5 @@
 'use client'
+import BoardingSearch from "@/components/BoardingLimit/indext";
 import Button from "@/components/Button";
 import CitySearch from "@/components/CitySearch";
 import Footer from "@/components/Footer";
@@ -23,6 +24,7 @@ export default function Home() {
   const [showSuccess, setShowSuccess] = useState(false);
   const [selectedModel, setSelectedModel] = useState<'oferta' | 'demanda' | string>("oferta");
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
+  const [selectedBoarding, setSelectedBoarding] = useState<string | null>(null);
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const [user, setUser] = useState<string | null>(null);
   const [volume, setVolume] = useState<number | null>(null);
@@ -30,7 +32,6 @@ export default function Home() {
   const [supplier, setSupplier] = useState<string | null>(null);
   const models: string[] = ['oferta', 'demanda'];
   const [open, setOpen] = useState(false);
-
   const handleClickOpen = () => {
     if (!user || !volume || !selectedProduct || !price || !selectedCity?.name) {
       toast.error('Preencha todos os campos!');
@@ -38,7 +39,6 @@ export default function Home() {
     }
     setOpen(true);
   }
-
   const handleClose = () => setOpen(false);
 
   const handleProductSelect = (product: string) => {
@@ -48,6 +48,10 @@ export default function Home() {
   const handleCitySelect = (city: any) => {
     setSelectedCity(city);
   };
+
+  const handleBoardingSelect = (boarding: string) => {
+    setSelectedBoarding(boarding);
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -70,7 +74,8 @@ export default function Home() {
       supplier: selectedModel === 'oferta' ? supplier : "",
       type: selectedModel,
       ibge_code: selectedCity?.ibge_code,
-      new_price: ""
+      new_price: "",
+      boarding_limit: selectedBoarding
     }
 
     try {
@@ -189,6 +194,11 @@ export default function Home() {
                 )
               }
             </div>
+            <div className="w-[80%] flex flex-col justify-center">
+              <div className="w-[100%] flex flex-col justify-center">
+                <BoardingSearch onSelectBoarding={handleBoardingSelect} />
+              </div>
+            </div>
             <Button
               title={`Criar ${selectedModel}`}
               containerStyle="mt-10 w-[80%]"
@@ -232,6 +242,9 @@ export default function Home() {
                           :
                           <></>
                       }
+                      <div className="flex justify-between">
+                        <p className="font-bold text-[14px]">Limite de Embarque:</p><p>{selectedBoarding}</p>
+                      </div>
                     </div>
                   </DialogContentText>
                 </DialogContent>
