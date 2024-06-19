@@ -123,7 +123,7 @@ export default function Home() {
         }
         <main className={`flex flex-col items-center ${environment === "DEV" ? 'mt-[-42px]' : ''}  justify-center py-16 px-8`} style={{ minHeight: 'calc(100vh - 120px)' }}>
           <div className="w-[90vw] h-[70vh] rounded-base max-w-[420px] flex flex-col items-center justify-start">
-            <div className="flex justify-around w-[90%] h-[45px] mb-4">
+            <div className="flex justify-around w-[90%] h-[35px] min-h-[35px] mb-5">
               {models.map((e, i) => {
                 return (
                   <Selector
@@ -133,13 +133,13 @@ export default function Home() {
                     onClick={() => {
                       setSelectedModel(e);
                     }}
-                    containerStyle="w-[40%] text-xl uppercase"
+                    containerStyle="w-[40%] h-[100%] text-xl uppercase"
                   />
                 )
               })}
             </div>
             <div className="flex flex-col items-center w-[100%]">
-              <div className="w-[80%] mb-4 flex flex-col justify-center">
+              <div className="w-[80%] mb-3 flex flex-col justify-center">
                 <Input
                   label="Usuário"
                   onChange={(e) => {
@@ -147,12 +147,12 @@ export default function Home() {
                   }}
                 />
               </div>
-              <div className="w-[80%] mb-4 flex justify-between">
+              <div className="w-[80%] mb-3 flex justify-between">
                 <div className="flex flex-col w-[100%] justify-center">
                   <ProductSearch onSelectProduct={handleProductSelect} />
                 </div>
               </div>
-              <div className="w-[80%] mb-4 flex justify-between">
+              <div className="w-[80%] mb-3 flex justify-between">
                 <div className="w-[100%] flex flex-col justify-center">
                   <Input
                     type="number"
@@ -166,7 +166,7 @@ export default function Home() {
                   />
                 </div>
               </div>
-              <div className="w-[80%] mb-4 flex flex-col justify-center">
+              <div className="w-[80%] mb-3 flex flex-col justify-center">
                 <Input
                   type="number"
                   label="Preço"
@@ -178,12 +178,12 @@ export default function Home() {
                   }}
                 />
               </div>
-              <div className="w-[80%] mb-4 flex flex-col justify-center">
+              <div className="w-[80%] mb-3 flex flex-col justify-center">
                 <CitySearch onSelectCity={handleCitySelect} />
               </div>
               {
                 selectedModel === 'demanda' ? <></> : (
-                  <div className="w-[80%] mb-4 flex flex-col justify-center">
+                  <div className="w-[80%] mb-3 flex flex-col justify-center">
                     <Input
                       label="Fornecedor"
                       onChange={(e) => {
