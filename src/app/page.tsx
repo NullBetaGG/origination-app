@@ -1,5 +1,4 @@
 'use client'
-import BoardingSearch from "@/components/BoardingLimit/indext";
 import Button from "@/components/Button";
 import CitySearch from "@/components/CitySearch";
 import Footer from "@/components/Footer";
@@ -12,6 +11,7 @@ import Success from "@/components/Success";
 import { useEnvironment } from "@/context/Environment";
 import { City } from "@/types/Cities";
 import { BASE_URL } from "@/utils/config";
+import MonthList from "@/utils/monthList";
 import { StateTransformAcronym, StateTransformName } from "@/utils/stateTransform";
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import axios from "axios";
@@ -40,6 +40,8 @@ export default function Home() {
     setOpen(true);
   }
   const handleClose = () => setOpen(false);
+  const date = new Date();
+  const monthList = MonthList(date);
 
   const handleProductSelect = (product: string) => {
     setSelectedProduct(product);
@@ -48,10 +50,6 @@ export default function Home() {
   const handleCitySelect = (city: any) => {
     setSelectedCity(city);
   };
-
-  const handleBoardingSelect = (boarding: string) => {
-    setSelectedBoarding(boarding);
-  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -79,7 +77,7 @@ export default function Home() {
     }
 
     try {
-      const response = await axios.post(`${BASE_URL}/new-orders`, payload);
+      await axios.post(`${BASE_URL}/new-orders`, payload);
       toast.success('Ordem salva com sucesso!');
       setShowSuccess(true);
 
@@ -194,14 +192,44 @@ export default function Home() {
                 )
               }
             </div>
-            <div className="w-[80%] flex flex-col justify-center">
-              <div className="w-[100%] flex flex-col justify-center">
-                <BoardingSearch onSelectBoarding={handleBoardingSelect} />
+            <div className="w-[80%] flex flex-col gap-2 justify-center">
+              <p className="flex items-center text-neutral-300 justify-between mb-1 font-medium">
+                Limite de Embarque
+              </p>
+              <div className="w-[100%] gap-3 flex justify-center">
+                {monthList.slice(0, 3).map((e, i) => {
+                  return (
+                    <Selector
+                      key={e}
+                      text={e}
+                      isSelected={selectedBoarding === e}
+                      onClick={() => {
+                        setSelectedBoarding(e);
+                      }}
+                      containerStyle="w-[6.5rem] h-[2.5rem] text-xl uppercase"
+                    />
+                  )
+                })}
+              </div>
+              <div className="w-[100%] flex  gap-3 justify-center">
+                {monthList.slice(3, 6).map((e, i) => {
+                  return (
+                    <Selector
+                      key={e}
+                      text={e}
+                      isSelected={selectedBoarding === e}
+                      onClick={() => {
+                        setSelectedBoarding(e);
+                      }}
+                      containerStyle="w-[6.5rem] h-[2.5rem] text-xl uppercase"
+                    />
+                  )
+                })}
               </div>
             </div>
             <Button
               title={`Criar ${selectedModel}`}
-              containerStyle="mt-10 w-[80%]"
+              containerStyle="mt-8 w-[80%]"
               onClick={() => {
                 handleClickOpen();
               }}

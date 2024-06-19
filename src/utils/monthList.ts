@@ -1,19 +1,19 @@
 import { addMonths, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
-function firstUpper(month: string) {
-  return month.charAt(0).toUpperCase() + month.slice(1);
+function formatMonthYear(date: Date) {
+  const month = format(date, "MMM", { locale: ptBR });
+  const year = format(date, "yy", { locale: ptBR });
+  return `${month.charAt(0).toUpperCase()}${month.slice(1)}/${year}`;
 }
 
 export default function MonthList(date: Date) {
   const result = [];
   let currentDate = date;
 
-  for (let i = 0; i < 7; i++) {
-    const formattedDate = format(addMonths(currentDate, i), "MMMM yyyy", {
-      locale: ptBR,
-    });
-    result.push(firstUpper(formattedDate));
+  for (let i = 0; i < 6; i++) {
+    const formattedDate = formatMonthYear(addMonths(currentDate, i));
+    result.push(formattedDate);
   }
 
   return result;
