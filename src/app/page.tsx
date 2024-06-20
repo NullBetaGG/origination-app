@@ -121,7 +121,7 @@ export default function Home() {
             :
             <></>
         }
-        <main className={`flex flex-col items-center ${environment === "DEV" ? 'mt-[-42px]' : ''}  justify-center px-8`} style={{ minHeight: 'calc(100vh - 90px)' }}>
+        <main className={`flex flex-col items-center ${environment === "DEV" ? 'mt-[-42px]' : 'mt-[-30px]'}  justify-center px-8`} style={{ minHeight: 'calc(100vh - 90px)' }}>
           <div className="w-[90vw] h-[75vh] rounded-base max-w-[420px] flex flex-col items-center justify-start">
             <div className="flex justify-around w-[90%] h-[35px] min-h-[35px] mb-4">
               {models.map((e, i) => {
