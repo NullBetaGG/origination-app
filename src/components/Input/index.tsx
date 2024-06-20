@@ -33,7 +33,7 @@ export default function Input({
         </div>
       )}
       <div
-        className={`border-[1px] h-[42px] border-neutral-900 rounded-base inputContainer overflow-hidden focus-within:border-primary-900 flex items-center w-full transition-colors duration-200 ${containerStyle} ${props.disabled ? "bg-neutral-200" : "bg-transparent"
+        className={`border-[1px] h-[40px] border-neutral-900 rounded-base inputContainer overflow-hidden focus-within:border-primary-900 flex items-center w-full transition-colors duration-200 ${containerStyle} ${props.disabled ? "bg-neutral-200" : "bg-transparent"
           } `}
       >
         {children && <div className="pl-2">{children}</div>}

@@ -32,6 +32,7 @@ export default function Home() {
   const [supplier, setSupplier] = useState<string | null>(null);
   const models: string[] = ['oferta', 'demanda'];
   const [open, setOpen] = useState(false);
+  const [observation, setObservation] = useState<string>('');
   const handleClickOpen = () => {
     if (!user || !volume || !selectedProduct || !price || !selectedCity?.name) {
       toast.error('Preencha todos os campos!');
@@ -73,7 +74,8 @@ export default function Home() {
       type: selectedModel,
       ibge_code: selectedCity?.ibge_code,
       new_price: "",
-      boarding_limit: selectedBoarding
+      boarding_limit: selectedBoarding,
+      observation: observation
     }
 
     try {
@@ -113,15 +115,15 @@ export default function Home() {
       <div className="flex flex-col">
         {
           environment === "DEV" ?
-            <div className="w-full items-center flex justify-center bg-support-error py-3">
+            <div className="w-full items-center flex justify-center bg-support-error">
               <p className="text-neutral-300 font-bold text-2xl">DEVELOP</p>
             </div>
             :
             <></>
         }
-        <main className={`flex flex-col items-center ${environment === "DEV" ? 'mt-[-42px]' : ''}  justify-center py-16 px-8`} style={{ minHeight: 'calc(100vh - 120px)' }}>
-          <div className="w-[90vw] h-[70vh] rounded-base max-w-[420px] flex flex-col items-center justify-start">
-            <div className="flex justify-around w-[90%] h-[35px] min-h-[35px] mb-5">
+        <main className={`flex flex-col items-center ${environment === "DEV" ? 'mt-[-42px]' : ''}  justify-center px-8`} style={{ minHeight: 'calc(100vh - 90px)' }}>
+          <div className="w-[90vw] h-[75vh] rounded-base max-w-[420px] flex flex-col items-center justify-start">
+            <div className="flex justify-around w-[90%] h-[35px] min-h-[35px] mb-4">
               {models.map((e, i) => {
                 return (
                   <Selector
@@ -226,10 +228,24 @@ export default function Home() {
                   )
                 })}
               </div>
+              <div className="w-[100%] mb-3 flex justify-between">
+                <div className="w-[100%] flex flex-col justify-center">
+                  <Input
+                    type="string"
+                    label="Observações"
+                    onChange={(e) => {
+                      if (e.target.value) {
+                        const value = e.target.value
+                        setObservation(value);
+                      }
+                    }}
+                  />
+                </div>
+              </div>
             </div>
             <Button
               title={`Criar ${selectedModel}`}
-              containerStyle="mt-8 w-[80%]"
+              containerStyle="mt-5 w-[80%]"
               onClick={() => {
                 handleClickOpen();
               }}
@@ -272,6 +288,9 @@ export default function Home() {
                       }
                       <div className="flex justify-between">
                         <p className="font-bold text-[14px]">Limite de Embarque:</p><p>{selectedBoarding}</p>
+                      </div>
+                      <div className="flex justify-between">
+                        <p className="font-bold text-[14px]">Observação:</p><p className="ml-2 text-end">{observation}</p>
                       </div>
                     </div>
                   </DialogContentText>

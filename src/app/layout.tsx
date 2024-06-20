@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <EnvironmentProvider>
       <html lang="en">
-        <body className={inter.className}>
+        <body className={`${inter.className} h-[100vh]`}>
           {children}
           <ToastContainerWrapper />
         </body>
