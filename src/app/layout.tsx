@@ -17,8 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <EnvironmentProvider>
-      <html lang="en">
-        <body className={`${inter.className} h-[100vh]`}>
+      <html className="bg-neutral-100" lang="en">
+        <body className={`${inter.className}`}>
           {children}
           <ToastContainerWrapper />
         </body>
