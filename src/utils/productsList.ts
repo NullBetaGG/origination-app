@@ -1,4 +1,5 @@
 export const productsList = [
+  "CAROÇO DE ALGODÃO",
   "CASCA DE SOJA MOIDA",
   "CASCA DE SOJA PELETIZADA",
   "DDGS A GRANEL",
