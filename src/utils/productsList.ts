@@ -21,6 +21,7 @@ export const productsList = [
   "MILHETO",
   "MILHO GRÃO",
   "MILHO MOIDO",
+  "OLEO DE MILHO",
   "POLPA CITRICA A GRANEL",
   "POLPA CITRICA ENSACADO",
   "PROMIL",
